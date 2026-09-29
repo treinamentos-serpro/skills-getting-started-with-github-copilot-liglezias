@@ -29,22 +29,34 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="participants-section">
             <h5>Participants</h5>
             <ul class="participants-list">
-              ${details.participants.length > 0
-                ? details.participants.map((participant) => `
+                ? details.participants.map((participant) => {
+                    const escapedParticipant = participant.replace(
+                      /[&<>"']/g,
+                      (character) => ({
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&#39;",
+                      })[character]
+                    );
+
+                    return `
                     <li>
-                      <span>${participant}</span>
+                      <span>${escapedParticipant}</span>
                       <button
                         type="button"
                         class="remove-participant"
                         data-activity="${encodeURIComponent(name)}"
                         data-email="${encodeURIComponent(participant)}"
-                        aria-label="Cancel signup for ${participant}"
+                        aria-label="Cancel signup for ${escapedParticipant}"
                         title="Cancel signup"
                       >
                         <span aria-hidden="true">&#128465;</span>
                       </button>
                     </li>
-                  `).join("")
+                  `;
+                  }).join("")
                 : "<li class=\"no-participants\">No participants yet</li>"}
             </ul>
           </div>
