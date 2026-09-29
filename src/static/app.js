@@ -138,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(result.detail || "Failed to cancel signup");
       }
 
+      messageDiv.classList.add("hidden");
       await fetchActivities();
     } catch (error) {
       messageDiv.textContent = error.message;
